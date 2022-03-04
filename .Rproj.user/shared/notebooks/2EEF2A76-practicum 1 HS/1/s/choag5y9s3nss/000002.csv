@@ -1,0 +1,9 @@
+"0","```r
+rs = dbExecute(con, 
+\"select YEAR(`date`) as `Year`,count(*) as `Number of Incidents`
+from incidents
+where YEAR(`date`)>= 2005 and YEAR(`date`)<= 2011
+group by YEAR(`date`)\")
+```"
+"1","Error: external pointer is not valid
+"

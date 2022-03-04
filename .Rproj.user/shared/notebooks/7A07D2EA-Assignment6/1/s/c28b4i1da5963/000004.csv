@@ -1,0 +1,7 @@
+"0","CREATE TABLE Lesson(
+  tid INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  lengthInHrs INTEGER NOT NULL,
+  subject TEXT CHECK( subject IN ('ML','SQL','R', 'Java') ) ,
+  PRIMARY KEY (tid)
+);"

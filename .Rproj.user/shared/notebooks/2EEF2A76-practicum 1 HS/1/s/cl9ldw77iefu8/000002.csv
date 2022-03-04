@@ -1,0 +1,4 @@
+"0","```sql
+delete from incidents;
+
+```"

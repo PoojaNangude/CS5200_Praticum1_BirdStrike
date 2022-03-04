@@ -1,0 +1,5 @@
+"0","csv_path <- ""/Users/poojanangude/Desktop/courses/CS5200_DBMS/Practicum1"""
+"0","csv_filename <- ""BirdStrikesData.csv"""
+"0","fileName <- paste(csv_path, csv_filename, sep = ""/"")"
+"0","dataframe <- read.csv(fileName, header = TRUE, stringsAsFactors = FALSE)"
+"0","head(dataframe)"

@@ -1,0 +1,6 @@
+"0","```r
+library(RSQLite)
+
+# connect to the SQLite database in the specified file
+db.conn <- dbConnect(SQLite(), dbname=\"/Users/poojanangude/Desktop/courses/CS5200_DBMS/Assignment5/MediaDB.db\")
+```"

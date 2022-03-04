@@ -1,0 +1,5 @@
+"0","```r
+makePlot()
+legend(\"topleft\", legend=c(\"change in incidents\"),
+       col=c(\"red\"), lty=1:2, cex=0.8)
+```"

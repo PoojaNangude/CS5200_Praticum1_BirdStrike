@@ -1,0 +1,8 @@
+"0","con <- dbConnect(RMariaDB::MariaDB(), user=db_user, password=db_password, dbname=db_name, host=db_host)"
+"0","dbListTables(con)"
+"1","[1]"
+"1"," ""airports""  "
+"1"," ""conditions"""
+"1"," ""incidents"" "
+"1","
+"

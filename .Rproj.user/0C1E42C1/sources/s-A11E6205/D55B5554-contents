@@ -1,0 +1,186 @@
+---
+title: "002165700 - Practicum 1"
+output: html_notebook
+---
+<!-- QUESTION 1 -->
+<!-- Install required packages -->
+```{r}
+install.packages("RMariaDB")
+install.packages("anytime")
+```
+
+<!-- Import required libraries -->
+```{r}
+library(RMariaDB)
+library(anytime)
+library(tidyverse)
+library(dbplyr)
+```
+
+<!-- Set parameters of MySQL database. These need to be changed accordingly for the project file to execute -->
+```{r}
+db_user <- 'root'
+db_password <- 'Pooj@180598'
+db_name <- 'bird_strike'
+db_host <- 'localhost' 
+db_port <- 3306
+```
+
+```{r}
+con <- dbConnect(RMariaDB::MariaDB(), user=db_user, password=db_password, dbname=db_name, host=db_host)
+dbListTables(con)
+```
+
+```{sql connection=con}
+drop table if exists incidents;
+```
+
+```{sql connection=con}
+drop table if exists airports;
+```
+
+```{sql connection=con}
+drop table if exists conditions;
+```
+
+```{sql connection=con}
+create table airports(
+  aid int primary key auto_increment,
+  airportName varchar(50),
+  airportCode varchar(4),
+  state varchar(50)
+);
+```
+
+```{sql connection=con}
+create table conditions(
+  cid int primary key auto_increment,
+  `condition` varchar(20),
+  explanation varchar(50)
+);
+```
+
+```{sql connection=con}
+create table incidents(
+  iid int primary key auto_increment,
+  `date` date,
+  origin int,
+  airline varchar(50),
+  aircraft varchar(50),
+  flightPhase varchar(50),
+  impact boolean,
+  cond int,
+  foreign key(origin) references airports(aid),
+  foreign key(cond) references conditions(cid)
+)
+```
+
+```{r}
+birdStrikesDF <- read.csv("BirdStrikesData.csv",header = TRUE, stringsAsFactors = FALSE);
+head(birdStrikesDF)
+```
+
+```{r}
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight == "Landing Roll"] <- "landing"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Approach"]<-"landing"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Climb"]<-"inflight"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Descent"]<-"landing"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Take-off run"]<-"takeoff"
+
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Parked"]<-"unknown"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Taxi"]<-"unknown"
+birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight==""]<-"unknown"
+birdStrikesDF$Airport..Name[birdStrikesDF$Airport..Name==""]<-"unknown"
+birdStrikesDF$Aircraft..Airline.Operator[birdStrikesDF$Aircraft..Airline.Operator==""]<-"unknown"
+```
+
+```{r}
+unique(birdStrikesDF$When..Phase.of.flight)
+```
+
+```{r}
+(birdStrikesDF)
+```
+
+```{r}
+birdStrikesDF$FlightDate <- as.character(map(strsplit(birdStrikesDF$FlightDate, split = " "), 1))
+```
+
+```{r}
+birdStrikesDF$FlightDate <- as.Date(birdStrikesDF$FlightDate,"%m/%d/%Y")
+```
+
+```{r}
+(birdStrikesDF)
+```
+
+```{r}
+birdStrikesDF$Effect..Indicated.Damage[birdStrikesDF$Effect..Indicated.Damage=="Caused damage"]<-"TRUE"
+birdStrikesDF$Effect..Indicated.Damage[birdStrikesDF$Effect..Indicated.Damage=="No damage"]<-"FALSE"
+```
+
+```{r}
+unique(birdStrikesDF$Effect..Indicated.Damage)
+```
+
+```{r}
+(birdStrikesDF)
+```
+
+```{r}
+birdStrikesDF <- birdStrikesDF[birdStrikesDF$Aircraft..Airline.Operator != "MILITARY",]
+```
+
+```{r}
+birdStrikesDF
+```
+
+```{r}
+unique(birdStrikesDF$Aircraft..Airline.Operator)
+```
+
+<!-- QUESTION 2 -->
+<!-- Write the birdStrikesDF dataframe to a temporary table -->
+```{r}
+dbWriteTable(
+  con,
+  name="birdStrikeRaw",
+  value=birdStrikesDF,
+  row.names = FALSE,
+  overwrite = TRUE,
+  temporary = FALSE
+)
+```
+
+```{sql connection=con}
+SELECT * FROM birdStrikeRaw;
+```
+
+```{sql connection=con}
+delete from incidents;
+
+```
+
+```{sql connection=con}
+delete from airports;
+```
+
+```{sql connection=con}
+delete from conditions;
+```
+
+```{sql connection=con}
+insert into airports(airportName,state)
+select distinct(`Airport..Name`),`Origin.State`
+from birdStrikeRaw;
+```
+
+```{sql connection=con}
+select * from airports;
+```
+
+```{r}
+dbDisconnect(con)
+```
+
+<!-- Polpulate the tables with the respective data -->

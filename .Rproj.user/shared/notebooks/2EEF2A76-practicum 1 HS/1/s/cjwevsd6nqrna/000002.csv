@@ -1,0 +1,9 @@
+"0","```r
+makePlot<-function(){
+  x<-rs$`Year`; y=rs$`Number of Incidents`
+  
+  plot(x, y, type=\"b\", pch=19, col=\"red\", xlab=\"Year\", ylab=\"Number of Incidents\",main = \"Incidents Statistics\")
+  lines(x, y, pch=18, col=\"red\", type=\"l\", lty=2)
+}
+
+```"

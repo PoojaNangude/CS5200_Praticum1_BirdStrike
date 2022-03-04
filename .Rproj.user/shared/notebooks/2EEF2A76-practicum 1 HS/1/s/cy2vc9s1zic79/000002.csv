@@ -1,0 +1,4 @@
+"0","```sql
+drop table if exists incidents;
+
+```"

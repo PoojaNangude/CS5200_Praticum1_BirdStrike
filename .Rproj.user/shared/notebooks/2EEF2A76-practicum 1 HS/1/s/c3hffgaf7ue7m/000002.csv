@@ -1,0 +1,13 @@
+"0","```sql
+select max(airports.name)
+from airports,incidents,airlines
+where airports.pid=incidents.pid 
+and airlines.aid=incidents.aid
+and airlines.airline 
+not in(select name 
+        from airlines 
+        where airline like \"%Business\" 
+        or airline like \"%private\" 
+        or airline like \"%military%\")
+
+```"

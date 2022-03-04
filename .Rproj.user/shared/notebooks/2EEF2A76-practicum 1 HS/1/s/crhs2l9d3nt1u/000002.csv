@@ -1,0 +1,17 @@
+"0","```sql
+
+create table if not exists incidents(
+  iid int primary key auto_increment,
+  `date` date,
+  pid int,
+  aid int,
+  port varchar(50),
+  airline varchar(50),
+  aircraft varchar(50),
+  flight_phase varchar(50),
+  impact varchar(50),
+  foreign key(aid) references airlines(aid),
+  foreign key(pid) references airports(pid)
+)
+
+```"

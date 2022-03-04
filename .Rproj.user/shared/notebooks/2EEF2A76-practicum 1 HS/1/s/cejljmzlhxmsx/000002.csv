@@ -1,0 +1,9 @@
+"0","```sql
+select count(*) as `Number of Bird Strike Incidents` 
+from incidents,airports
+where airports.name=\"LAGUARDIA NY\" 
+and
+incidents.pid=airports.pid;
+
+
+```"

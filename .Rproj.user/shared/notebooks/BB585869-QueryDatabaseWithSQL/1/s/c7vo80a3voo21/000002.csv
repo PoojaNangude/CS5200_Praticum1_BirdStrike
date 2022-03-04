@@ -1,0 +1,7 @@
+"0","```sql
+SELECT ar.Name AS 'Artist Name', SUM(t.UnitPrice) as 'Total Price of Tracks' 
+FROM tracks AS t 
+INNER JOIN albums AS al ON t.AlbumId=al.AlbumId 
+INNER JOIN artists AS ar ON al.Artistid=ar.Artistid 
+GROUP BY ar.Artistid, ar.Name;
+```"

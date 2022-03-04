@@ -1,0 +1,8 @@
+"0","```r
+# construct a SQL query for fetching the invoice_items tables
+sqlCmdQ5 = \"ALTER TABLE invoice_items ADD COLUMN DiscPrice REAL\"
+# send the SQL query to the database
+rs = dbExecute(db.conn, sqlCmdQ5)
+```"
+"1","Error: duplicate column name: DiscPrice
+"

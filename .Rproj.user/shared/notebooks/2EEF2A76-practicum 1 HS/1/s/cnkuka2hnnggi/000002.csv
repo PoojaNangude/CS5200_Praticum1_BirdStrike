@@ -1,0 +1,6 @@
+"0","```sql
+insert into airports(name,state)
+select distinct(incidentRaw.`Airport..Name`),incidentRaw.`Origin.State`
+from incidentRaw ;
+
+```"

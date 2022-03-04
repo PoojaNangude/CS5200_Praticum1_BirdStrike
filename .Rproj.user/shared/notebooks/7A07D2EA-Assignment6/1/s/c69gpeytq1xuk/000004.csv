@@ -1,0 +1,5 @@
+"0","INSERT INTO Course (cnumber,title,lengthInDays) VALUES 
+  (""CS5200"",""Database Management Systems"",120),
+  (""CS5610"",""Web Development"",100),
+  (""CS5800"",""Programming Design Paradigm"",80),
+  (""CS5700"",""Alogirthms"",150);"

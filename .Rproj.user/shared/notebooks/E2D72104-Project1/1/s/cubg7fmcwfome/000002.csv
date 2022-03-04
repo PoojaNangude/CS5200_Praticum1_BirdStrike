@@ -1,0 +1,1 @@
+"0","birdStrikesDF <- birdStrikesDF[birdStrikesDF$Aircraft..Airline.Operator != ""MILITARY"",]"

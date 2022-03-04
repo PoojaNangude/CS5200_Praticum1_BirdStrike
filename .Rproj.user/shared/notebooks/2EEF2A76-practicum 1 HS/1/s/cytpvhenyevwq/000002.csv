@@ -1,0 +1,8 @@
+"0","```sql
+
+select YEAR(`date`) as `Year`,count(*) as `Number of Incidents`
+from incidents
+group by YEAR(`date`)
+
+
+```"

@@ -1,0 +1,2 @@
+"0","mydb <-  dbConnect(MySQL(), user = db_user, password = db_password,"
+"0","                 dbname = db_name, host = db_host, port = db_port)"

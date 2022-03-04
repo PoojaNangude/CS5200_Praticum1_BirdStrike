@@ -1,0 +1,12 @@
+"0","create table incidents(
+  iid int primary key auto_increment,
+  `date` date,
+  origin int,
+  airline varchar(50),
+  aircraft varchar(50),
+  flightPhase varchar(50),
+  impact boolean,
+  cond int,
+  foreign key(origin) references airports(aid),
+  foreign key(cond) references conditions(cid)
+)"

@@ -1,0 +1,7 @@
+"0","```r
+dbDisconnect(con)
+```"
+"1","Warning message:
+In result_fetch(res@ptr, n = n) :
+  Use dbExecute() instead of dbGetQuery() for statements, and also avoid dbFetch()
+"

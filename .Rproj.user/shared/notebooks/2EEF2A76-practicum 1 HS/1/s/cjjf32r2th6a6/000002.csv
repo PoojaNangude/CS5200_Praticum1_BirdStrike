@@ -1,0 +1,7 @@
+"0","```r
+localuserpassword <- \"root1234\"
+con <- dbConnect(RMariaDB::MariaDB(), user='root', password=localuserpassword, dbname='birdStrikes', host='localhost')
+dbListTables(con)
+```"
+"1","character(0)
+"

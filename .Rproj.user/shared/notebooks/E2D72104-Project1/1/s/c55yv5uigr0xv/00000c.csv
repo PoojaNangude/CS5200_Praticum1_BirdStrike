@@ -1,0 +1,5 @@
+"0","create table conditions(
+  cid int primary key auto_increment,
+  `condition` varchar(20),
+  explanation varchar(50)
+);"

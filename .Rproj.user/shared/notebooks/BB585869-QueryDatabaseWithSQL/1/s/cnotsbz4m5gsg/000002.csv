@@ -1,0 +1,5 @@
+"0","```sql
+SELECT DISTINCT c.LastName, c.City, c.State 
+FROM customers AS c 
+INNER JOIN invoices AS i ON c.CustomerId=i.CustomerId;
+```"

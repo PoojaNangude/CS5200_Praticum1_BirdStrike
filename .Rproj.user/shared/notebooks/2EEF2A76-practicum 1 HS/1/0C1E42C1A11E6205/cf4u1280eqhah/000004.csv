@@ -1,0 +1,6 @@
+"0","
+create table if not exists airlines(
+  aid int primary key auto_increment,
+  code varchar(10),
+  airline varchar(50)
+);"

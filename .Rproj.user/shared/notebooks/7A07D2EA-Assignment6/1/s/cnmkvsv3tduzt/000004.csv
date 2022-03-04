@@ -1,0 +1,9 @@
+"0","CREATE TRIGGER validate_lesson_lengthInHrsInsert BEFORE INSERT
+ON Lesson
+BEGIN
+SELECT
+CASE
+WHEN NEW.lengthInHrs > 20 OR NEW.lengthInHrs <= 0 THEN
+RAISE(ABORT,'Invalid lengthInHrs value. lengthInHrs cannot be negative and must be a positive number less than equal to 20')
+END;
+END;"

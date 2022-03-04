@@ -1,0 +1,8 @@
+"0","```r
+# construct a SQL query for fetching the invoice_items tables
+sqlCmd = \"SELECT * FROM invoice_items\"
+
+# send the SQL query to the database
+rs = dbGetQuery(db.conn, sqlCmd)
+head(rs,5)
+```"

@@ -1,0 +1,5 @@
+"0","INSERT INTO PreRequisites (tid,prerequisiteId) VALUES 
+  (5202,5201),
+  (5802,5801),
+  (5803,5801),
+  (5803,5802);"

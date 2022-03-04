@@ -1,0 +1,5 @@
+"0","```sql
+SELECT al.Title AS 'Album Title', ar.Name AS 'Artist Name'
+FROM albums AS al 
+INNER JOIN artists AS ar on al.ArtistId=ar.ArtistId;
+```"

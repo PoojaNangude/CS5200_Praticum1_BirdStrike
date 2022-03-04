@@ -1,0 +1,8 @@
+"0","```r
+for (i in 1:nrow(queryQ2)) {
+  if (queryQ2[i,\"Total_number_of_items_in_invoice\"]>5) {
+   rs[i,\"DiscPrice\"] <- rs[i,\"UnitPrice\"] * 0.9
+  }
+}
+rs
+```"

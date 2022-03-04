@@ -1,0 +1,3 @@
+"0","```sql
+Alter table airports auto_increment = 1;
+```"

@@ -1,0 +1,3 @@
+"0","insert into airports(airportName,state)
+select distinct(`Airport..Name`),`Origin.State`
+from birdStrikeRaw;"

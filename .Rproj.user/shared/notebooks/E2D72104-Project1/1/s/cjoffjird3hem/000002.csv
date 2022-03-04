@@ -1,0 +1,1 @@
+"0","birdStrikesDF$FlightDate <- as.character(map(strsplit(birdStrikesDF$FlightDate, split = "" ""), 1))"

@@ -1,0 +1,7 @@
+"0","CREATE TABLE PreRequisites(
+  tid INTEGER NOT NULL,
+  prerequisiteId INTEGER NOT NULL,
+  PRIMARY KEY (tid, prerequisiteId),
+  FOREIGN KEY(tid) REFERENCES Lesson(tid) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY(prerequisiteId) REFERENCES Lesson(tid) ON UPDATE CASCADE ON DELETE CASCADE
+);"

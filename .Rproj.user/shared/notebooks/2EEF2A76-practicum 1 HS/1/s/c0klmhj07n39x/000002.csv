@@ -1,0 +1,10 @@
+"0","```r
+dbWriteTable(
+  con,
+  name=\"incidentRaw\",
+  value=incidentdf,
+  row.names = FALSE,
+  overwrite = TRUE,
+  temporary = FALSE
+)
+```"

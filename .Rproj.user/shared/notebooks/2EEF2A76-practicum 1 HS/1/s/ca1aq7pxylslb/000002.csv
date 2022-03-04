@@ -1,0 +1,14 @@
+"0","```r
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight == \"Landing Roll\"] <- \"Landing\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Take-off run\"]<-\"Takeoff\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Approach\"]<-\"Inflight\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Climb\"]<-\"Inflight\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Descent\"]<-\"Inflight\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Taxi\"]<-\"Unkown\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"Parked\"]<-\"Unkown\"
+incidentdf$When..Phase.of.flight[incidentdf$When..Phase.of.flight==\"\"]<-\"Unkown\"
+
+
+incidentdf$Aircraft..Airline.Operator[incidentdf$Aircraft..Airline.Operator==\"\"]<-\"Unkown\"
+incidentdf$Airport..Name[incidentdf$Airport..Name==\"\"]<-\"Unknown\"
+```"

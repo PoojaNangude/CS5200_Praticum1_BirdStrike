@@ -1,0 +1,6 @@
+"0","```sql
+insert into airlines(airline)
+select distinct incidentRaw.`Aircraft..Airline.Operator`
+from incidentRaw ;
+
+```"

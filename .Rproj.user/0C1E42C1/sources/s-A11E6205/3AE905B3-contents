@@ -1,0 +1,39 @@
+---
+title: "Project Basic Installations ans Setup"
+output: html_notebook
+---
+
+```{r}
+library(RMySQL)
+```
+
+<!-- Connecting to MySQL database -->
+```{r}
+db_user <- 'root'
+db_password <- 'Pooj@180598'
+db_name <- 'test_db'
+db_host <- 'localhost' 
+db_port <- 3306
+```
+
+
+```{r}
+mydb <-  dbConnect(MySQL(), user = db_user, password = db_password,
+                 dbname = db_name, host = db_host, port = db_port)
+```
+
+<!-- Reading a CSV file -->
+```{r}
+csv_path <- "/Users/poojanangude/Desktop/courses/CS5200_DBMS/Practicum1"
+csv_filename <- "BirdStrikesData.csv"
+fileName <- paste(csv_path, csv_filename, sep = "/")
+dataframe <- read.csv(fileName, header = TRUE, stringsAsFactors = FALSE)
+head(dataframe)
+```
+
+
+```{r}
+dbDisconnect(mydb)
+```
+
+

@@ -1,0 +1,6 @@
+"0","```sql
+insert into incidents(`date`, port, airline, aircraft, flight_Phase, impact)
+select `FlightDate`,`Airport..Name`,`Aircraft..Airline.Operator`,`Aircraft..Make.Model`, `When..Phase.of.flight`, `Effect..Indicated.Damage`
+from incidentRaw
+
+```"

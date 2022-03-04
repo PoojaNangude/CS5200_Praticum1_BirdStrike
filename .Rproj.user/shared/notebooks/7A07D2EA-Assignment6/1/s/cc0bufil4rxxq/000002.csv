@@ -1,0 +1,5 @@
+"0","library(RSQLite)"
+"0","fpath=""/Users/poojanangude/Desktop/courses/CS5200_DBMS/Assignment6/"""
+"0","dbfile=""courseworkDB.sqlite"""
+"0",""
+"0","dbcon <- dbConnect(RSQLite::SQLite(),paste0(fpath,dbfile))"

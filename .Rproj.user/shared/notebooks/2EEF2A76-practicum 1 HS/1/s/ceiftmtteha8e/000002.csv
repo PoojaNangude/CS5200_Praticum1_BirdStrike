@@ -1,0 +1,7 @@
+"0","```sql
+
+CREATE procedure deleteIncident (IN id int)
+  delete from incidents
+  where incidents.iid=id;
+
+```"

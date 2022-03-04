@@ -1,0 +1,9 @@
+"0","```sql
+```sql
+SELECT g.Name AS 'Genre Name', ROUND(SUM(t.Milliseconds/3.6),2) AS 'Total Hours'
+FROM tracks AS t
+INNER JOIN genres AS g
+ON t.Genreid = g.GenreId
+GROUP BY g.GenreId, g.Name;
+```
+```"

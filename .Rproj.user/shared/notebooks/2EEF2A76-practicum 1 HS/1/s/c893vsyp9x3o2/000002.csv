@@ -1,0 +1,5 @@
+"0","```r
+unique(incidentdf$When..Phase.of.flight)
+```"
+"1","[1] \"Inflight\" \"Landing\"  \"Takeoff\"  \"Unkown\"  
+"

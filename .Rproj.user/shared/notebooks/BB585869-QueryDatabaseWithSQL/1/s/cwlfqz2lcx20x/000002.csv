@@ -1,0 +1,5 @@
+"0","```sql
+SELECT COUNT(Customerid) as 'Number of Customers with no purchase' 
+FROM customers 
+WHERE Customerid NOT IN(SELECT Customerid FROM invoices);
+```"

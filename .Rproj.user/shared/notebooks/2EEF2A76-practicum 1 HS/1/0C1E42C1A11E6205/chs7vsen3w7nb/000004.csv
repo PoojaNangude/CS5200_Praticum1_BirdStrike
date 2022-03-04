@@ -1,0 +1,3 @@
+"2","Error: Failed to add the foreign key constraint. Missing column 'pid' for constraint 'incidents_ibfk_2' in the referenced table 'airports' [3734]
+"
+"2","Failed to execute SQL chunk"

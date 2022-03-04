@@ -1,0 +1,17 @@
+"0","```sql
+SELECT ar.Name AS 'Artist with most tracks'
+FROM tracks AS t 
+INNER JOIN albums AS al
+ON t.Albumid = al.Albumid
+INNER JOIN artists AS ar
+ON al.Artistid = ar.Artistid   
+GROUP BY ar.Artistid, ar.Name 
+HAVING COUNT(t.Trackid) = 
+(SELECT MAX(a.Number)
+FROM
+(SELECT COUNT(t.Trackid) AS 'Number'
+FROM tracks AS t
+INNER JOIN albums AS al
+ON t.Albumid = al.Albumid
+GROUP BY al.Artistid) AS a); 
+```"

@@ -1,0 +1,6 @@
+"0","# 1. Library"
+"0","library(RMariaDB)"
+"0","library(dbplyr)"
+"2","Error: package or namespace load failed for ‘dbplyr’ in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+ namespace ‘rlang’ 0.4.12 is already loaded, but >= 1.0.0 is required
+"

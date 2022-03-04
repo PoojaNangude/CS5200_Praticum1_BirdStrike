@@ -1,0 +1,8 @@
+"0","dbWriteTable("
+"0","  con,"
+"0","  name=""birdStrikeRaw"","
+"0","  value=birdStrikesDF,"
+"0","  row.names = FALSE,"
+"0","  overwrite = TRUE,"
+"0","  temporary = FALSE"
+"0",")"

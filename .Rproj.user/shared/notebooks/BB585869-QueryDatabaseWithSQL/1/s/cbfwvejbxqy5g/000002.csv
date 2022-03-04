@@ -1,0 +1,4 @@
+"0","```sql
+SELECT Title FROM albums 
+WHERE title LIKE '%symphony%';
+```"

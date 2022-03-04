@@ -1,0 +1,8 @@
+"0","```sql
+UPDATE incidents
+INNER JOIN airports
+ON airports.name = incidents.port
+SET incidents.pid=airports.pid;
+
+
+```"

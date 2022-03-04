@@ -1,0 +1,4 @@
+"0","```r
+rs$ExtPrice <- round((rs$UnitPrice * rs$Quantity),2)
+head(rs,5)
+```"

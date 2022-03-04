@@ -1,0 +1,6 @@
+"0","```sql
+SELECT c.Country, COUNT(DISTINCT c.CustomerId) as 'Number of Unique Customers' FROM customers AS c 
+INNER JOIN invoices AS i on c.CustomerId=i.CustomerId 
+GROUP BY c.Country 
+HAVING COUNT(DISTINCT c.CustomerId)>=1;
+```"
