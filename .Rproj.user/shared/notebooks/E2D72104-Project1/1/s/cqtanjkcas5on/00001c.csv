@@ -1,0 +1,3 @@
+"0","insert into conditions(`condition`)
+select distinct(`Conditions..Sky`)
+from birdStrikeRaw;"

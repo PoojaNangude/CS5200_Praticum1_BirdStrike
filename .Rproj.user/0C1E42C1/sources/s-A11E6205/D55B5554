@@ -3,26 +3,26 @@
     "path": "~/Desktop/courses/CS5200_DBMS/Practicum1/Project1.Rmd",
     "project_path": "Project1.Rmd",
     "type": "r_markdown",
-    "hash": "3962717371",
+    "hash": "2742859628",
     "contents": "",
     "dirty": false,
     "created": 1646347455609.0,
     "source_on_save": false,
-    "relative_order": 4,
+    "relative_order": 2,
     "properties": {
         "tempName": "Untitled1",
         "chunk_output_type": "inline",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "181,6",
-        "scrollLine": "180"
+        "cursorPosition": "258,3",
+        "scrollLine": "254"
     },
     "folds": "",
-    "lastKnownWriteTime": 1646414128,
+    "lastKnownWriteTime": 1646432213,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1646414128372,
+    "last_content_update": 1646432214005,
     "read_only": false,
     "read_only_alternatives": []
 }

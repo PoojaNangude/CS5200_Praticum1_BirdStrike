@@ -1,5 +1,0 @@
-"0",""
-"0","incidentdf <- read.csv(""BirdStrikesData.csv"",header = TRUE, stringsAsFactors = FALSE);"
-"0",""
-"0",""
-"0","head(incidentdf,15)"

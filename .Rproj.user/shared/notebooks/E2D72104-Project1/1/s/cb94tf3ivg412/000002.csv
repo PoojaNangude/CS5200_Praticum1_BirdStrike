@@ -1,0 +1,4 @@
+"0","dbDisconnect(con)"
+"2","Warning in connection_release(conn@ptr) :"
+"2"," Already disconnected
+"

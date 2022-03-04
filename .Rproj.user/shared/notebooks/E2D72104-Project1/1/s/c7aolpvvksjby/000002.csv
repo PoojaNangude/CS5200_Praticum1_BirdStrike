@@ -1,0 +1,4 @@
+"0","UPDATE incidents
+INNER JOIN airports
+ON incidents.originTemp = airports.airportName
+SET incidents.origin=airports.aid;"

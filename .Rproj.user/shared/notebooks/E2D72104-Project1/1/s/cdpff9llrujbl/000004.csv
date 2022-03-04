@@ -1,0 +1,1 @@
+"0","alter table incidents add condTemp varchar(20);"

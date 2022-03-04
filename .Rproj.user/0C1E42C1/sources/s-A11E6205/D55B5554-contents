@@ -44,6 +44,10 @@ drop table if exists conditions;
 ```
 
 ```{sql connection=con}
+drop table if exists birdStrikeRaw;
+```
+
+```{sql connection=con}
 create table airports(
   aid int primary key auto_increment,
   airportName varchar(50),
@@ -115,19 +119,6 @@ birdStrikesDF$FlightDate <- as.Date(birdStrikesDF$FlightDate,"%m/%d/%Y")
 ```
 
 ```{r}
-birdStrikesDF$Effect..Indicated.Damage[birdStrikesDF$Effect..Indicated.Damage=="Caused damage"]<-"TRUE"
-birdStrikesDF$Effect..Indicated.Damage[birdStrikesDF$Effect..Indicated.Damage=="No damage"]<-"FALSE"
-```
-
-```{r}
-unique(birdStrikesDF$Effect..Indicated.Damage)
-```
-
-```{r}
-(birdStrikesDF)
-```
-
-```{r}
 birdStrikesDF <- birdStrikesDF[birdStrikesDF$Aircraft..Airline.Operator != "MILITARY",]
 ```
 
@@ -178,9 +169,113 @@ from birdStrikeRaw;
 ```{sql connection=con}
 select * from airports;
 ```
+```{sql connection = con}
+insert into conditions(`condition`)
+select distinct(`Conditions..Sky`)
+from birdStrikeRaw;
+```
+
+```{sql connection=con}
+select * from conditions;
+```
+
+```{sql connection=con}
+alter table incidents add originTemp varchar(50);
+```
+
+```{sql connection=con}
+alter table incidents add condTemp varchar(20);
+```
+
+```{sql connection=con}
+alter table incidents add impactTemp varchar(13);
+```
+
+```{sql connection=con}
+insert into incidents(`date`, airline, aircraft, flightPhase ,originTemp, condTemp, impactTemp)
+select `FlightDate`,`Aircraft..Airline.Operator`,`Aircraft..Make.Model`, `When..Phase.of.flight`, `Airport..Name`, `Conditions..Sky`, `Effect..Indicated.Damage`
+from birdStrikeRaw
+```
+
+
+```{sql connection=con}
+select * from incidents limit 10;
+```
+<!-- Take some time to execute -->
+```{sql connection=con}
+UPDATE incidents
+INNER JOIN airports
+ON incidents.originTemp = airports.airportName
+SET incidents.origin=airports.aid;
+```
+
+```{sql connection=con}
+select * from incidents;
+```
+
+```{sql connection=con}
+alter table incidents
+drop column originTemp;
+
+```
+
+```{sql connection=con}
+UPDATE incidents
+INNER JOIN conditions
+ON incidents.condTemp = conditions.condition
+SET incidents.cond=conditions.cid;
+```
+
+```{sql connection=con}
+alter table incidents
+drop column condTemp;
+```
+
+```{sql connection=con}
+update incidents
+set impact=1
+where impactTemp="Caused damage";
+```
+
+```{sql connection=con}
+update incidents
+set impact=0
+where impactTemp="No damage";
+```
+
+```{sql connection=con}
+alter table incidents
+drop column impactTemp;
+```
+
+```{sql connection=con}
+select * from incidents;
+```
+
+<!-- QUERIES AND STORED PROCEDURES i.e. Q4, Q5, Q6, Q7, Q8-->
+
+<!-- QUESTION 4-->
+<!-- Create a SQL query against your database to find the number of bird strike incidents for each flight phase. You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
+```{sql connection=con}
+select flightPhase as 'Fligh Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;
+```
+
+<!-- QUESTION 5-->
+<!-- Create a SQL query against your database to find the flight phase that had an above average number bird strike incidents (during any flight phase). You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
+
+
+<!-- QUESTION 6-->
+<!-- Create a SQL query against your database to find the average number of bird strike incidents by month (across all years). Include all airlines and all flights. You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
+
+
+<!-- QUESTION 7-->
+<!-- Build a column chart that visualizes the number of bird strikes incidents per year from 2005 to 2011. Adorn the graph with appropriate axis labels, titles, legend, data labels, etc -->
+
+
+<!-- QUESTION 8-->
+<!-- Create a stored procedure in MySQL (note that if you used SQLite, then you cannot complete this step) that adds a new bird strike incident to the database. You may decide what you need to pass to the stored procedure to add a bird strike incident and you must account for there being potentially a new airport. After insertion, show (in R) that your procedure worked. Note that if you used SQLite rather than the required MySQL for the practicum, then you cannot complete this question as SQLite does not support stored procedures -->
+
 
 ```{r}
 dbDisconnect(con)
 ```
-
-<!-- Polpulate the tables with the respective data -->

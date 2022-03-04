@@ -23,8 +23,8 @@ library(RMariaDB)
 
 ## 1.2Connecting to the MySQL database using the MariaDB connector.
 ```{r}
-localuserpassword <- "Pooj@180598"
-con <- dbConnect(RMariaDB::MariaDB(), user='root', password=localuserpassword, dbname='bird_strike', host='localhost')
+localuserpassword <- "root1234"
+con <- dbConnect(RMariaDB::MariaDB(), user='root', password=localuserpassword, dbname='birdStrikes', host='localhost')
 dbListTables(con)
 
 
@@ -167,6 +167,7 @@ Alter table airlines auto_increment = 1;
 insert into airlines(airline)
 select distinct incidentRaw.`Aircraft..Airline.Operator`
 from incidentRaw ;
+
 ```
 
 ## 2.7 To insert data into airports
