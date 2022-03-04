@@ -1,0 +1,4 @@
+"0","plotGraph<-function(){"
+"0","  x<-question7$`Year`; y=question7$`Number of Incidents`"
+"0","  plot(x, y, type=""b"", xlab=""Year"", ylab=""Number of Incidents"",main = ""Incidents Statistics from year 2005 to 2011"")"
+"0","}"

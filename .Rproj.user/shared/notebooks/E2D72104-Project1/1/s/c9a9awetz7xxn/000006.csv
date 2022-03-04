@@ -1,0 +1,30 @@
+"2","Error: Can't DROP 'originTemp'; check that column/key exists [1091]
+"
+"2","In addition: "
+"2","Warning messages:
+"
+"2","1: "
+"2","In result_fetch(res@ptr, n = n) :"
+"2","
+ "
+"2"," Use dbExecute() instead of dbGetQuery() for statements, and also avoid dbFetch()
+"
+"2","2: "
+"2","In result_fetch(res@ptr, n = n) :"
+"2","
+ "
+"2"," Use dbExecute() instead of dbGetQuery() for statements, and also avoid dbFetch()
+"
+"2","3: "
+"2","In result_fetch(res@ptr, n = n) :"
+"2","
+ "
+"2"," Use dbExecute() instead of dbGetQuery() for statements, and also avoid dbFetch()
+"
+"2","4: "
+"2","In result_fetch(res@ptr, n = n) :"
+"2","
+ "
+"2"," Use dbExecute() instead of dbGetQuery() for statements, and also avoid dbFetch()
+"
+"2","Failed to execute SQL chunk"

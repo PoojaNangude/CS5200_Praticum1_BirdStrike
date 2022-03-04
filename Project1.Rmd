@@ -7,6 +7,8 @@ output: html_notebook
 ```{r}
 install.packages("RMariaDB")
 install.packages("anytime")
+install.packages("tidyverse")
+install.packages("dbplyr")
 ```
 
 <!-- Import required libraries -->
@@ -260,17 +262,41 @@ select * from incidents;
 select flightPhase as 'Fligh Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;
 ```
 
-<!-- QUESTION 5-->
+<!-- QUESTION 5 --> "<!-- PENDING" -->
 <!-- Create a SQL query against your database to find the flight phase that had an above average number bird strike incidents (during any flight phase). You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
 
 
-<!-- QUESTION 6-->
+<!-- QUESTION 6 -->
 <!-- Create a SQL query against your database to find the average number of bird strike incidents by month (across all years). Include all airlines and all flights. You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
+```{sql connection=con}
+select Month(date) as 'Month', ROUND(COUNT(iid)/12) 
+as 'Average number of incidents per month' from incidents 
+where Month(date) IS NOT NULL 
+group by Month(date) 
+order by Month(date);
+```
 
-
-<!-- QUESTION 7-->
+<!-- QUESTION 7 -->
 <!-- Build a column chart that visualizes the number of bird strikes incidents per year from 2005 to 2011. Adorn the graph with appropriate axis labels, titles, legend, data labels, etc -->
+```{r}
+question7 = dbGetQuery(con, 
+"select YEAR(`date`) as `Year`,count(iid) as `Count of Incidents`
+from incidents where YEAR(`date`)>= 2005 and YEAR(`date`)<= 2011
+group by YEAR(`date`) 
+order by YEAR(`date`)")
 
+question7
+```
+```{r}
+plotGraph<-function(){
+  x<-question7$`Year`; y=question7$`Number of Incidents`
+  plot(x, y, type="b", xlab="Year", ylab="Number of Incidents",main = "Incidents Statistics from year 2005 to 2011")
+}
+```
+
+```{r}
+plotGraph()
+```
 
 <!-- QUESTION 8-->
 <!-- Create a stored procedure in MySQL (note that if you used SQLite, then you cannot complete this step) that adds a new bird strike incident to the database. You may decide what you need to pass to the stored procedure to add a bird strike incident and you must account for there being potentially a new airport. After insertion, show (in R) that your procedure worked. Note that if you used SQLite rather than the required MySQL for the practicum, then you cannot complete this question as SQLite does not support stored procedures -->
