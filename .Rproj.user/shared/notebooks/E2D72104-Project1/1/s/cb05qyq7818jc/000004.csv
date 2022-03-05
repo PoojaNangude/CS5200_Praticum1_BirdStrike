@@ -1,3 +1,0 @@
-"0","update incidents
-set impact=1
-where impactTemp=""Caused damage"";"

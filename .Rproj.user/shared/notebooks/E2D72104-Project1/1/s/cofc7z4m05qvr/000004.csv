@@ -1,7 +1,0 @@
-"0","question7 = dbGetQuery(con, "
-"0","""select YEAR(`date`) as `Year`,count(iid) as `Count of Incidents`"
-"0","from incidents where YEAR(`date`)>= 2005 and YEAR(`date`)<= 2011"
-"0","group by YEAR(`date`) "
-"0","order by YEAR(`date`)"")"
-"0",""
-"0","question7"

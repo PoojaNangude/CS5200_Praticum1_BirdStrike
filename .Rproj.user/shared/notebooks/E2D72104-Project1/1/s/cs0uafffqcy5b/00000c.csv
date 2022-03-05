@@ -1,5 +1,0 @@
-"0","select Month(date) as 'Month', ROUND(COUNT(iid)/12) 
-as 'Average number of incidents per month' from incidents 
-where Month(date) IS NOT NULL 
-group by Month(date) 
-order by Month(date);"

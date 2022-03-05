@@ -1,6 +1,0 @@
-"0","create table airports(
-  aid int primary key auto_increment,
-  airportName varchar(50),
-  airportCode varchar(4),
-  state varchar(50)
-);"

@@ -1,8 +1,11 @@
 ---
-title: "002165700 - Practicum 1"
+title: "Practicum 1: Design and Implement a Relational Database"
 output: html_notebook
+author: "Pooja Shantatam Nangude"
+NUID: "002165700"
+email: "nangude.p@northeastern.edu"
 ---
-<!-- QUESTION 1 -->
+
 <!-- Install required packages -->
 ```{r}
 install.packages("RMariaDB")
@@ -23,16 +26,19 @@ library(dbplyr)
 ```{r}
 db_user <- 'root'
 db_password <- 'Pooj@180598'
-db_name <- 'bird_strike'
+db_name <- 'birdStrikes'
 db_host <- 'localhost' 
 db_port <- 3306
 ```
 
+
+<!-- Establishing a connection with the database -->
 ```{r}
 con <- dbConnect(RMariaDB::MariaDB(), user=db_user, password=db_password, dbname=db_name, host=db_host)
 dbListTables(con)
 ```
 
+<!-- Drop tables if already existing -->
 ```{sql connection=con}
 drop table if exists incidents;
 ```
@@ -45,10 +51,16 @@ drop table if exists airports;
 drop table if exists conditions;
 ```
 
+<!-- This is a temporary table which will be used to fill up all the tables with the required constraints and then will be deleted permanently -->
 ```{sql connection=con}
 drop table if exists birdStrikeRaw;
 ```
 
+<!-- QUESTION 1 AND QUESTION 2-->
+<!-- For questions 1 and 2, all the given requirements have not done been done in a sequential order, but in the end all the requirements have been satisfied. Description of all the steps done has been given -->
+
+<!-- Create schema for incidents table -->
+<!-- Note that the column airportCode will be left empty for future expansion as per the choice given in the problem statement -->
 ```{sql connection=con}
 create table airports(
   aid int primary key auto_increment,
@@ -58,6 +70,8 @@ create table airports(
 );
 ```
 
+<!-- Create schema for airports table -->
+<!-- Note that the column explanation will be left empty for future expansion as per the choice given in the problem statement -->
 ```{sql connection=con}
 create table conditions(
   cid int primary key auto_increment,
@@ -66,6 +80,8 @@ create table conditions(
 );
 ```
 
+<!-- Create schema for incidents table with the given constraints and relation to the airports and conditions table -->
+<!-- Note that when we define impact as boolean it will be stored as tinyint(1) in the database schema-->
 ```{sql connection=con}
 create table incidents(
   iid int primary key auto_increment,
@@ -81,33 +97,44 @@ create table incidents(
 )
 ```
 
+<!-- Reading and loading the BirdStrikesData csv into a dataframe -->
 ```{r}
 birdStrikesDF <- read.csv("BirdStrikesData.csv",header = TRUE, stringsAsFactors = FALSE);
 head(birdStrikesDF)
 ```
 
+<!-- Harmonizing the flight phases. I have replaced the original phases with the following values:
+1. Approach: landing
+2. Climb: inflight
+3. Descent: landing
+4. Take-off run: takeoff
+5. Parked: unknown
+6. Taxi: unknown
+7. "": unknown
+-->
 ```{r}
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight == "Landing Roll"] <- "landing"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Approach"]<-"landing"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Climb"]<-"inflight"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Descent"]<-"landing"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Take-off run"]<-"takeoff"
-
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Parked"]<-"unknown"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight=="Taxi"]<-"unknown"
 birdStrikesDF$When..Phase.of.flight[birdStrikesDF$When..Phase.of.flight==""]<-"unknown"
-birdStrikesDF$Airport..Name[birdStrikesDF$Airport..Name==""]<-"unknown"
-birdStrikesDF$Aircraft..Airline.Operator[birdStrikesDF$Aircraft..Airline.Operator==""]<-"unknown"
 ```
 
+<!-- Making sure that When..Phase.of.flight column has only one of following values: inflight, landing, takeoff, unknown -->
 ```{r}
 unique(birdStrikesDF$When..Phase.of.flight)
 ```
 
+<!-- If there is no airport name or airline name in the cell we add the value 'unknown' -->
 ```{r}
-(birdStrikesDF)
+birdStrikesDF$Airport..Name[birdStrikesDF$Airport..Name==""]<-"unknown"
+birdStrikesDF$Aircraft..Airline.Operator[birdStrikesDF$Aircraft..Airline.Operator==""]<-"unknown"
 ```
 
+<!-- Extracting only the date of the FlightDate column in the dataframe and changing its datatype to Date instead of string-->
 ```{r}
 birdStrikesDF$FlightDate <- as.character(map(strsplit(birdStrikesDF$FlightDate, split = " "), 1))
 ```
@@ -116,23 +143,17 @@ birdStrikesDF$FlightDate <- as.character(map(strsplit(birdStrikesDF$FlightDate, 
 birdStrikesDF$FlightDate <- as.Date(birdStrikesDF$FlightDate,"%m/%d/%Y")
 ```
 
-```{r}
-(birdStrikesDF)
-```
-
+<!-- Removing all the military flights from the dataframe -->
 ```{r}
 birdStrikesDF <- birdStrikesDF[birdStrikesDF$Aircraft..Airline.Operator != "MILITARY",]
 ```
 
+<!-- Making sure that all military flights have been removed -->
 ```{r}
-birdStrikesDF
+militaryFlights <- (birdStrikesDF[birdStrikesDF$Aircraft..Airline.Operator == "MILITARY"])
+ length(militaryFlights)
 ```
 
-```{r}
-unique(birdStrikesDF$Aircraft..Airline.Operator)
-```
-
-<!-- QUESTION 2 -->
 <!-- Write the birdStrikesDF dataframe to a temporary table -->
 ```{r}
 dbWriteTable(
@@ -146,12 +167,12 @@ dbWriteTable(
 ```
 
 ```{sql connection=con}
-SELECT * FROM birdStrikeRaw;
+SELECT * FROM birdStrikeRaw limit 5;
 ```
 
+<!-- Delete any previously entered data from the tables -->
 ```{sql connection=con}
 delete from incidents;
-
 ```
 
 ```{sql connection=con}
@@ -162,6 +183,9 @@ delete from airports;
 delete from conditions;
 ```
 
+<!-- Populating the airports, conditions and incidents tables -->
+
+<!-- POPULATING the airports table -->
 ```{sql connection=con}
 insert into airports(airportName,state)
 select distinct(`Airport..Name`),`Origin.State`
@@ -169,8 +193,10 @@ from birdStrikeRaw;
 ```
 
 ```{sql connection=con}
-select * from airports;
+select * from airports limit 10;
 ```
+
+<!-- POPLUATING the conditions table -->
 ```{sql connection = con}
 insert into conditions(`condition`)
 select distinct(`Conditions..Sky`)
@@ -181,6 +207,8 @@ from birdStrikeRaw;
 select * from conditions;
 ```
 
+
+<!-- POPLUATING the incidents table -->
 ```{sql connection=con}
 alter table incidents add originTemp varchar(50);
 ```
@@ -203,6 +231,8 @@ from birdStrikeRaw
 ```{sql connection=con}
 select * from incidents limit 10;
 ```
+
+<!-- Updating the table incidents with the 'origin' column which is a foreign key linked to the airports table -->
 <!-- Take some time to execute -->
 ```{sql connection=con}
 UPDATE incidents
@@ -212,15 +242,15 @@ SET incidents.origin=airports.aid;
 ```
 
 ```{sql connection=con}
-select * from incidents;
+select * from incidents limit 10;
 ```
 
 ```{sql connection=con}
 alter table incidents
 drop column originTemp;
-
 ```
 
+<!-- Updating the table incidents with the 'cond' column which is a foreign key linked to the conditions table -->
 ```{sql connection=con}
 UPDATE incidents
 INNER JOIN conditions
@@ -233,6 +263,7 @@ alter table incidents
 drop column condTemp;
 ```
 
+<!-- Updating the impact column. It is set to 1 if damage is cause, and set to 0 if no damage has been caused -->
 ```{sql connection=con}
 update incidents
 set impact=1
@@ -250,8 +281,16 @@ alter table incidents
 drop column impactTemp;
 ```
 
+<!-- QUESTION 3 -->
+<!-- Show that the loading of the data worked by displaying parts of each table -->
 ```{sql connection=con}
-select * from incidents;
+select * from incidents limit 10;
+```
+```{sql connection=con}
+select * from airports limit 10;
+```
+```{sql connection=con}
+select * from conditions limit 10;
 ```
 
 <!-- QUERIES AND STORED PROCEDURES i.e. Q4, Q5, Q6, Q7, Q8-->
@@ -262,7 +301,7 @@ select * from incidents;
 select flightPhase as 'Fligh Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;
 ```
 
-<!-- QUESTION 5 --> "<!-- PENDING" -->
+<!-- QUESTION 5 --> <!-- "PENDING" -->
 <!-- Create a SQL query against your database to find the flight phase that had an above average number bird strike incidents (during any flight phase). You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
 
 
@@ -298,7 +337,7 @@ plotGraph<-function(){
 plotGraph()
 ```
 
-<!-- QUESTION 8-->
+<!-- QUESTION 8--> <!-- "PENDING" -->
 <!-- Create a stored procedure in MySQL (note that if you used SQLite, then you cannot complete this step) that adds a new bird strike incident to the database. You may decide what you need to pass to the stored procedure to add a bird strike incident and you must account for there being potentially a new airport. After insertion, show (in R) that your procedure worked. Note that if you used SQLite rather than the required MySQL for the practicum, then you cannot complete this question as SQLite does not support stored procedures -->
 
 

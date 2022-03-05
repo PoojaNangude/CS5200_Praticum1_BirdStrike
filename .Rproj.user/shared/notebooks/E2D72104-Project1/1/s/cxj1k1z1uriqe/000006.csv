@@ -1,4 +1,0 @@
-"0","UPDATE incidents
-INNER JOIN conditions
-ON incidents.condTemp = conditions.condition
-SET incidents.cond=conditions.cid;"

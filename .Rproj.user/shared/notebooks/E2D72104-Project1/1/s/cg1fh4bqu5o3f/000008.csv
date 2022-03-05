@@ -1,1 +1,0 @@
-"0","alter table incidents add impactTemp varchar(13);"

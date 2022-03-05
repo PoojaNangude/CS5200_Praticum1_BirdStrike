@@ -1,2 +1,0 @@
-"0","birdStrikesDF <- read.csv(""BirdStrikesData.csv"",header = TRUE, stringsAsFactors = FALSE);"
-"0","head(birdStrikesDF)"

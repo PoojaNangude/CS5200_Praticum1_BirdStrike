@@ -1,3 +1,0 @@
-"0","insert into incidents(`date`, airline, aircraft, flightPhase ,originTemp, condTemp, impactTemp)
-select `FlightDate`,`Aircraft..Airline.Operator`,`Aircraft..Make.Model`, `When..Phase.of.flight`, `Airport..Name`, `Conditions..Sky`, `Effect..Indicated.Damage`
-from birdStrikeRaw"
