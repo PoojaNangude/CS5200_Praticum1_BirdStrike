@@ -1,1 +1,0 @@
-"0","select flightPhase as 'Fligh Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;"

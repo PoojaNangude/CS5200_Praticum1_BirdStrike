@@ -1,18 +1,12 @@
 ---
-title: "Practicum 1: Design and Implement a Relational Database"
-output: html_notebook
+title: 'Practicum 1: Design and Implement a Relational Database'
 author: "Pooja Shantatam Nangude"
-NUID: "002165700"
-email: "nangude.p@northeastern.edu"
+output:
+  html_document:
+    df_print: paged
+NUID: '002165700'
+email: nangude.p@northeastern.edu
 ---
-
-<!-- Install required packages -->
-```{r}
-install.packages("RMariaDB")
-install.packages("anytime")
-install.packages("tidyverse")
-install.packages("dbplyr")
-```
 
 <!-- Import required libraries -->
 ```{r}
@@ -233,7 +227,7 @@ select * from incidents limit 10;
 ```
 
 <!-- Updating the table incidents with the 'origin' column which is a foreign key linked to the airports table -->
-<!-- Take some time to execute -->
+<!-- Takes some time to execute - around 20 seconds required for executing this query -->
 ```{sql connection=con}
 UPDATE incidents
 INNER JOIN airports
@@ -298,11 +292,19 @@ select * from conditions limit 10;
 <!-- QUESTION 4-->
 <!-- Create a SQL query against your database to find the number of bird strike incidents for each flight phase. You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
 ```{sql connection=con}
-select flightPhase as 'Fligh Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;
+select flightPhase as 'Flight Phase', count(flightPhase) as 'Number of incidents' from incidents group by flightPhase;
 ```
 
-<!-- QUESTION 5 --> <!-- "PENDING" -->
+<!-- QUESTION 5 -->
 <!-- Create a SQL query against your database to find the flight phase that had an above average number bird strike incidents (during any flight phase). You may either use a {sql} code chunk or an R function to execute the query. It must be a single query -->
+
+<!-- Note that for this query I have taken all those records which have a flightPhase value of either inflight, landing or takeoff. The records whose flightPhase value is unknown is not considered -->
+```{sql connection=con}
+select flightPhase as 'Flight Phase', count(flightPhase) as 'Number of incidents' 
+from incidents group by flightPhase 
+having count(flightPhase) > (select ROUND(COUNT(*)/3) from incidents where flightPhase != "unknown") 
+and flightPhase != "unknown";
+```
 
 
 <!-- QUESTION 6 -->
@@ -337,9 +339,78 @@ plotGraph<-function(){
 plotGraph()
 ```
 
-<!-- QUESTION 8--> <!-- "PENDING" -->
+<!-- QUESTION 8-->
 <!-- Create a stored procedure in MySQL (note that if you used SQLite, then you cannot complete this step) that adds a new bird strike incident to the database. You may decide what you need to pass to the stored procedure to add a bird strike incident and you must account for there being potentially a new airport. After insertion, show (in R) that your procedure worked. Note that if you used SQLite rather than the required MySQL for the practicum, then you cannot complete this question as SQLite does not support stored procedures -->
 
+<!-- Stored procedure to add a new bird strike event
+This stored procedure does the following things:
+1. INPUT PARAMETERS - date, airportName, airline, aircraft, flightPhase, impact, condition
+2. If the provided airport name exists in the airports table, the incident is added in the incidents table
+2. If the provided airport name is not already present in the airports table, a new record is created for it in the airports table and then the incident is added in the incidents table
+3. The stored procedure also handle the logic of adding the origin and cond value in the incidents tables which are the foreign keys.
+-->
+```{sql connection=con}
+CREATE PROCEDURE `add_new_incident`(idate date, iairportName varchar(50), 
+iairline  varchar(50), iaircraft  varchar(50), iflightPhase  varchar(50), 
+iimpact tinyint(1), icondition varchar(20))
+BEGIN
+  
+  DECLARE iaid INT;
+  DECLARE icond INT;
+  
+    IF EXISTS(Select aid from airports where airportName=iairportName limit 1) THEN
+      
+      SET iaid = (SELECT aid from airports where airportName = iairportName limit 1);
+      SET icond = (SELECT cid from conditions where `condition` = icondition limit 1);
+      
+      INSERT INTO incidents(`date`, origin, airline, aircraft, flightPhase ,impact, cond)
+		VALUES (idate, iaid, iairline, iaircraft, iflightPhase, iimpact, icond);
+        
+        
+        
+    ELSE
+    INSERT INTO airports(airportName) values(iairportName);
+    
+      SET iaid = (SELECT aid from airports where airportName = iairportName limit 1);
+      SET icond = (SELECT cid from conditions where `condition` = icondition limit 1);
+      
+      INSERT INTO incidents(`date`, origin, airline, aircraft, flightPhase ,impact, cond)
+		VALUES (idate, iaid, iairline, iaircraft, iflightPhase, iimpact, icond);
+        
+    END IF;
+  END
+```
+
+<!-- Inserting a new bird strike incident in which the airport name already exists in the airports table -->
+```{sql connection=con}
+CALL add_new_incident('2020-08-09', "LAGUARDIA NY", "AMERICAN AIRLINES", "MD-80", "takeoff", 0, "No Cloud");
+```
+
+<!-- Checking if the incident has been added into the incidents table -->
+```{sql connection=con}
+select * from incidents order by iid desc limit 1;
+```
+
+<!-- Inserting a new bird strike incident in which the airport name does not exist in the airports table -->
+```{sql connection=con}
+CALL add_new_incident('2020-08-09', "LAGUARDIA NY PHASE 2", "ALASKA AIRLINES", "LEARJET-25", "landing", 1, "Overcast");
+```
+
+<!-- Checking if a new record has been created of the airport name in the airports table -->
+<!-- Note that when a new record is created in the airports table the state column will be empty. We have to update it according to the state in which the airport is located-->
+```{sql connection=con}
+select * from airports order by aid desc limit 1;
+```
+
+<!-- Checking if the incident has been added into the incidents table -->
+```{sql connection=con}
+select * from incidents order by iid desc limit 1;
+```
+
+<!-- Delete procedure -->
+```{sql connection=con}
+DROP PROCEDURE add_new_incident;
+```
 
 ```{r}
 dbDisconnect(con)
